@@ -1,0 +1,88 @@
+/* ====== БАЗОВЫЙ СТИЛЬ ====== */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* ====== КНОПКИ ====== */
+
+button, .btn {
+    background-color: #2b7cff;
+    border: none;
+    padding: 10px 16px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.btn:hover {
+    background-color: #1a5fd1;
+}
+
+/* Удаление */
+.btn-danger {
+    background-color: #e74c3c;
+}
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* ====== ТАБЛИЦА ====== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+th {
+    background: #2b7cff;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+tr:hover {
+    background: #f1f5ff;
+}
+
+/* ====== ФОРМЫ ====== */
+
+form {
+    max-width: 450px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+label {
+    font-weight: bold;
+}
