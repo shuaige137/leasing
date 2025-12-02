@@ -37,7 +37,7 @@ public class LeasingEntity {
     public String getLastName() {
         return this.lastName;
     }
-    public void setLast_name(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 

@@ -42,7 +42,7 @@ public class Controllers {
     public ModelAndView showEditLeasingForm(@PathVariable(name="id") Long id){
         ModelAndView mav = new ModelAndView("editLeasing");
         LeasingEntity leasing = service.get(id);
-        mav.addObject("Leasing", leasing);
+        mav.addObject("leasing", leasing);
         return mav;
     }
 
