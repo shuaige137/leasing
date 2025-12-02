@@ -1,9 +1,9 @@
 package com.example.leasing_spring;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class LeasingService {
@@ -17,7 +17,7 @@ public class LeasingService {
         return repo.findAll();
     }
 
-    public void save(LeasingEntity leasing) {
+    public void saveLeasing(LeasingEntity leasing) {
         repo.save(leasing);
     }
 
@@ -25,7 +25,7 @@ public class LeasingService {
         return repo.findById(id).get();
     }
 
-    public void delete(Long id) {
+    public void deleteLeasing(Long id) {
         repo.deleteById(id);
     }
 }

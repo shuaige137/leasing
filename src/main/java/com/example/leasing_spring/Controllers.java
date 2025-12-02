@@ -34,7 +34,7 @@ public class Controllers {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveLeasing(@ModelAttribute("leasing") LeasingEntity leasing){
-        service.save(leasing);
+        service.saveLeasing(leasing);
         return "redirect:/";
     }
 
@@ -48,7 +48,7 @@ public class Controllers {
 
     @RequestMapping("/delete/{id}")
     public String deleteLeasing(@PathVariable(name="id") Long id){
-        service.delete(id);
+        service.deleteLeasing(id);
         return "redirect:/";
     }
 
