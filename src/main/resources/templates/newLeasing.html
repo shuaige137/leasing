@@ -2,9 +2,47 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Информационно-справочная система лизинговой компании</title>
-    <link rel="stylesheet" th:href="@{/css/style.css/}">
+    <title>Информационно-справочная система лизинговой компании | Добавление клиента</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="bg-image" style="background-image: url(); height: 100vh; overflow: auto">
     <blockquote class="blockquote text-center"><h1>Добавление клиента</h1></blockquote>
+    <div class="row">
+        <div class="col-md-8 offset-md-4">
+            <form action="#" th:action="@{/save}" th:object="${leasing}" method="post">
+                <table>
+                    <tr>
+                        <td>ID клиента:</td>
+                        <td><input type="text" th:field="*{id}"></td>
+                    </tr>
+                    <tr>
+                        <td>Имя:</td>
+                        <td><input type="text" th:field="*{firstName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Фамилия:</td>
+                        <td><input type="text" th:field="*{lastName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Номер:</td>
+                        <td><input type="text" th:field="*{number}"></td>
+                    </tr>
+                    <tr>
+                        <td>Балл:</td>
+                        <td><input type="text" onkeyup="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');" onchange="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');"  th:field="*{score}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Добавить</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
