@@ -2,47 +2,326 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Информационно-справочная система лизинговой компании | Добавление клиента</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Добавление нового клиента</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --accent-color: #3498db;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e4f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .form-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 12px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .field-hint {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-cancel {
+            background-color: #95a5a6;
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .alert-box {
+            background-color: #e8f4fc;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+    </style>
 </head>
 <body>
-<div class="bg-image" style="background-image: url(); height: 100vh; overflow: auto">
-    <blockquote class="blockquote text-center"><h1>Добавление клиента</h1></blockquote>
-    <div class="row">
-        <div class="col-md-8 offset-md-4">
-            <form action="#" th:action="@{/save}" th:object="${leasing}" method="post">
-                <table>
-                    <tr>
-                        <td>ID клиента:</td>
-                        <td><input type="text" th:field="*{id}"></td>
-                    </tr>
-                    <tr>
-                        <td>Имя:</td>
-                        <td><input type="text" th:field="*{firstName}"></td>
-                    </tr>
-                    <tr>
-                        <td>Фамилия:</td>
-                        <td><input type="text" th:field="*{lastName}"></td>
-                    </tr>
-                    <tr>
-                        <td>Номер:</td>
-                        <td><input type="text" th:field="*{number}"></td>
-                    </tr>
-                    <tr>
-                        <td>Балл:</td>
-                        <td><input type="text" onkeyup="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');" onchange="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');"  th:field="*{score}"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Добавить</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+<div class="container">
+    <div class="form-card">
+        <!-- Заголовок -->
+        <div class="form-header">
+            <h1><i class="bi bi-person-plus me-2"></i>Добавление нового клиента</h1>
+            <p class="text-muted mb-0">Заполните форму для добавления клиента в базу данных</p>
         </div>
+
+        <!-- Информационное сообщение -->
+        <div class="alert-box">
+            <i class="bi bi-info-circle me-2"></i>
+            Все поля, отмеченные звёздочкой (*), обязательны для заполнения
+        </div>
+
+        <!-- Форма добавления -->
+        <form th:action="@{/save}" th:object="${leasing}" method="post">
+            <!-- Поле clientId генерируется автоматически -->
+
+            <div class="row">
+                <!-- Левая колонка -->
+                <div class="col-md-6">
+                    <!-- ФИО -->
+                    <div class="form-group">
+                        <label class="form-label required-field">ФИО / Название организации:</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" required
+                               placeholder="Иванов Иван Иванович или ООО 'Ромашка'">
+                        <div class="field-hint">
+                            Для физических лиц - ФИО, для организаций - полное наименование
+                        </div>
+                    </div>
+
+                    <!-- Номер договора -->
+                    <div class="form-group">
+                        <label class="form-label required-field">Номер договора:</label>
+                        <input type="number" th:field="*{agreementN}" class="form-control" required
+                               placeholder="123456" min="1" step="1"
+                               th:attr="value=${leasing.agreementN != null} ? ${leasing.agreementN} : ''">
+                        <div class="field-hint">
+                            Уникальный номер договора лизинга (только цифры)
+                        </div>
+                    </div>
+
+                    <!-- Телефон -->
+                    <div class="form-group">
+                        <label class="form-label required-field">Телефон:</label>
+                        <input type="tel" th:field="*{phone}" class="form-control" required
+                               placeholder="+7 (999) 123-45-67">
+                        <div class="field-hint">
+                            Основной контактный телефон клиента
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка -->
+                <div class="col-md-6">
+                    <!-- ИНН -->
+                    <div class="form-group">
+                        <label class="form-label">ИНН:</label>
+                        <input type="text" th:field="*{inn}" class="form-control"
+                               placeholder="7712345678" maxlength="12">
+                        <div class="field-hint">
+                            10 цифр для организаций, 12 цифр для физических лиц
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email:</label>
+                        <input type="email" th:field="*{email}" class="form-control"
+                               placeholder="client@example.com">
+                        <div class="field-hint">
+                            Электронная почта для связи
+                        </div>
+                    </div>
+
+                    <!-- Тип клиента -->
+                    <div class="form-group">
+                        <label class="form-label">Тип клиента:</label>
+                        <select th:field="*{clientType}" class="form-select">
+                            <option value="">Выберите тип клиента...</option>
+                            <option value="INDIVIDUAL">Физическое лицо</option>
+                            <option value="LEGAL_ENTITY">Юридическое лицо</option>
+                            <option value="SOLE_PROPRIETOR">Индивидуальный предприниматель</option>
+                        </select>
+                        <div class="field-hint">
+                            Выберите категорию клиента
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <a th:href="@{/}" class="btn btn-cancel w-100">
+                        <i class="bi bi-x-lg me-2"></i>Отмена
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="bi bi-check-lg me-2"></i>Добавить клиента
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Скрипты для улучшения UX -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Автофокус на первое поле
+        const firstInput = document.querySelector('input[th\\:field="*{fullName}"]');
+        if (firstInput) firstInput.focus();
+
+        // Очистка ИНН от нецифровых символов
+        const innInput = document.querySelector('input[th\\:field="*{inn}"]');
+        if (innInput) {
+            innInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 12) {
+                    value = value.substring(0, 12);
+                }
+                e.target.value = value;
+            });
+        }
+
+        // Форматирование телефона
+        const phoneInput = document.querySelector('input[th\\:field="*{phone}"]');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+
+                // Заменяем ведущую 8 на +7
+                if (value.startsWith('8')) {
+                    value = '7' + value.substring(1);
+                }
+
+                // Добавляем + в начало
+                if (value.length >= 1) {
+                    value = '+' + value;
+                }
+
+                // Форматирование: +7 (999) 123-45-67
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + ' (' + value.substring(2);
+                }
+                if (value.length > 7) {
+                    value = value.substring(0, 7) + ') ' + value.substring(7);
+                }
+                if (value.length > 12) {
+                    value = value.substring(0, 12) + '-' + value.substring(12);
+                }
+                if (value.length > 15) {
+                    value = value.substring(0, 15) + '-' + value.substring(15);
+                }
+
+                e.target.value = value;
+            });
+        }
+    });
+
+    // Валидация формы перед отправкой
+    function validateForm() {
+        // Проверка обязательных полей
+        const requiredFields = [
+            { selector: 'input[th\\:field="*{fullName}"]', name: 'ФИО' },
+            { selector: 'input[th\\:field="*{agreementN}"]', name: 'Номер договора' },
+            { selector: 'input[th\\:field="*{phone}"]', name: 'Телефон' }
+        ];
+
+        for (const field of requiredFields) {
+            const input = document.querySelector(field.selector);
+            if (input && input.value.trim() === '') {
+                alert(`Поле "${field.name}" обязательно для заполнения`);
+                input.focus();
+                return false;
+            }
+        }
+
+        // Проверка ИНН (если заполнен)
+        const innInput = document.querySelector('input[th\\:field="*{inn}"]');
+        if (innInput && innInput.value !== '') {
+            const innValue = innInput.value.replace(/\D/g, '');
+            if (innValue.length !== 10 && innValue.length !== 12) {
+                alert('ИНН должен содержать 10 или 12 цифр');
+                innInput.focus();
+                return false;
+            }
+        }
+
+        // Проверка уникальности номера договора (можно добавить AJAX проверку)
+
+        return true;
+    }
+
+    // Назначаем валидацию на отправку формы
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (!validateForm()) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
 </body>
 </html>
-
 

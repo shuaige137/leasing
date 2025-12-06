@@ -2,45 +2,331 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Информационно-справочная система лизинговой компании | Редактирование клиента</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Редактирование клиента</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .client-id-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            border: none;
+            padding: 14px 30px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            border: none;
+            padding: 14px 30px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .field-hint {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 25px;
+                margin: 15px;
+            }
+
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="bg-image" style="background-image: url(); height: 100vh; overflow: auto">
-    <blockquote class="blockquote text-center"><h1>Редактирование клиента</h1></blockquote>
-    <div class="row">
-        <div class="col-md-8 offset-md-4">
-            <form action="#" th:action="@{/save}" th:object="${leasing}" method="post">
-                <table>
-                    <tr>
-                        <td>ID клиетна:</td>
-                        <td><input type="text" th:field="*{id}" readonly="readonly"></td>
-                    </tr>
-                    <tr>
-                        <td>Имя:</td>
-                        <td><input type="text" th:field="*{firstName}"></td>
-                    </tr>
-                    <tr>
-                        <td>Фамилия:</td>
-                        <td><input type="text" th:field="*{lastName}"></td>
-                    </tr>
-                    <tr>
-                        <td>Номер:</td>
-                        <td><input type="text" th:field="*{number}"></td>
-                    </tr>
-                    <tr>
-                        <td>Балл:</td>
-                        <td><input type="text" onkeyup="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');" onchange="this.value = this.value.replace(/\.(?=.*\.)|[^\d\.-]/g, '');"  th:field="*{score}"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Отправить</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+<div class="container">
+    <div class="form-card">
+        <!-- Заголовок с ID клиента -->
+        <div class="form-header">
+            <h1><i class="bi bi-person-badge me-2"></i>Редактирование клиента</h1>
+            <div class="mt-2">
+                    <span class="client-id-badge">
+                        ID: <span th:text="${leasing.clientId}"></span>
+                    </span>
+            </div>
         </div>
+
+        <!-- Форма редактирования -->
+        <form th:action="@{/save}" th:object="${leasing}" method="post">
+            <!-- Скрытое поле для ID клиента -->
+            <input type="hidden" th:field="*{clientId}">
+
+            <div class="row">
+                <!-- Левая колонка -->
+                <div class="col-lg-6">
+                    <!-- ФИО -->
+                    <div class="form-group">
+                        <label class="form-label required-field">ФИО / Название организации:</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" required>
+                        <div class="field-hint">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Полное ФИО для физических лиц или наименование организации
+                        </div>
+                    </div>
+
+                    <!-- Номер договора -->
+                    <div class="form-group">
+                        <label class="form-label required-field">Номер договора:</label>
+                        <input type="number" th:field="*{agreementN}" class="form-control" required
+                               min="1" readonly>
+                        <div class="field-hint">
+                            <i class="bi bi-lock me-1"></i>
+                            Номер договора нельзя изменить
+                        </div>
+                    </div>
+
+                    <!-- ИНН -->
+                    <div class="form-group">
+                        <label class="form-label">ИНН:</label>
+                        <input type="text" th:field="*{inn}" class="form-control"
+                               pattern="\d{10,12}"
+                               title="ИНН должен содержать 10 (для юр.лиц) или 12 (для физ.лиц) цифр"
+                               maxlength="12">
+                        <div class="field-hint">
+                            <i class="bi bi-card-checklist me-1"></i>
+                            10 цифр для организаций, 12 цифр для физических лиц
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка -->
+                <div class="col-lg-6">
+                    <!-- Тип клиента -->
+                    <div class="form-group">
+                        <label class="form-label">Тип клиента:</label>
+                        <select th:field="*{clientType}" class="form-select">
+                            <option value="">Выберите тип клиента...</option>
+                            <option value="INDIVIDUAL">Физическое лицо</option>
+                            <option value="LEGAL_ENTITY">Юридическое лицо</option>
+                            <option value="SOLE_PROPRIETOR">Индивидуальный предприниматель</option>
+                        </select>
+                        <div class="field-hint">
+                            <i class="bi bi-person-workspace me-1"></i>
+                            Выберите категорию клиента
+                        </div>
+                    </div>
+
+                    <!-- Телефон -->
+                    <div class="form-group">
+                        <label class="form-label required-field">Телефон:</label>
+                        <input type="tel" th:field="*{phone}" class="form-control" required
+                               pattern="[\+\d\s\-\(\)]+"
+                               title="Введите корректный номер телефона">
+                        <div class="field-hint">
+                            <i class="bi bi-telephone me-1"></i>
+                            Формат: +7 (999) 123-45-67 или 89991234567
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email:</label>
+                        <input type="email" th:field="*{email}" class="form-control"
+                               pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                               title="Введите корректный email адрес">
+                        <div class="field-hint">
+                            <i class="bi bi-envelope me-1"></i>
+                            Пример: client@example.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="row mt-5">
+                <div class="col-md-6 mb-3">
+                    <a th:href="@{/}" class="btn btn-cancel w-100">
+                        <i class="bi bi-x-circle me-2"></i>Отмена
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="bi bi-check-circle me-2"></i>Сохранить изменения
+                    </button>
+                </div>
+            </div>
+
+            <!-- Информационное сообщение -->
+            <div class="alert alert-info mt-4" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                Все изменения будут сохранены в базе данных. Поле "Номер договора" защищено от изменений.
+            </div>
+        </form>
     </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Скрипт для очистки ИНН от нецифровых символов -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const innInput = document.querySelector('input[th\\:field="*{inn}"]');
+        if (innInput) {
+            innInput.addEventListener('input', function(e) {
+                // Оставляем только цифры
+                let value = e.target.value.replace(/\D/g, '');
+
+                // Ограничиваем длину
+                if (value.length > 12) {
+                    value = value.substring(0, 12);
+                }
+
+                e.target.value = value;
+            });
+        }
+
+        // Автоматическое форматирование телефона
+        const phoneInput = document.querySelector('input[th\\:field="*{phone}"]');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+
+                if (value.startsWith('8')) {
+                    value = '7' + value.substring(1);
+                }
+
+                if (value.length >= 1) {
+                    value = '+' + value;
+                }
+
+                // Форматирование: +7 (999) 123-45-67
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + ' (' + value.substring(2);
+                }
+                if (value.length > 7) {
+                    value = value.substring(0, 7) + ') ' + value.substring(7);
+                }
+                if (value.length > 12) {
+                    value = value.substring(0, 12) + '-' + value.substring(12);
+                }
+                if (value.length > 15) {
+                    value = value.substring(0, 15) + '-' + value.substring(15);
+                }
+
+                e.target.value = value;
+            });
+        }
+    });
+
+    // Валидация формы перед отправкой
+    function validateForm() {
+        const phoneInput = document.querySelector('input[th\\:field="*{phone}"]');
+        const innInput = document.querySelector('input[th\\:field="*{inn}"]');
+
+        if (phoneInput && phoneInput.value.trim() === '') {
+            alert('Поле "Телефон" обязательно для заполнения');
+            phoneInput.focus();
+            return false;
+        }
+
+        if (innInput && innInput.value !== '') {
+            const innValue = innInput.value.replace(/\D/g, '');
+            if (innValue.length !== 10 && innValue.length !== 12) {
+                alert('ИНН должен содержать 10 или 12 цифр');
+                innInput.focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Присоединяем валидацию к форме
+    document.querySelector('form').onsubmit = validateForm;
+</script>
 </body>
 </html>
