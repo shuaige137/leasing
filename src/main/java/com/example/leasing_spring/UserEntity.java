@@ -2,6 +2,7 @@ package com.example.leasing_spring;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -20,4 +21,16 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String role; // ADMIN / USER
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // Геттеры и сеттеры
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

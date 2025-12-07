@@ -1,8 +1,8 @@
-// UserController.java
 package com.example.leasing_spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +20,38 @@ public class UserController {
 
     // Список всех пользователей
     @GetMapping("/")
-    public String listUsers(Model model) {
+    public String listUsers(Model model, Authentication authentication) {
         List<UserEntity> users = userRepository.findAll();
         model.addAttribute("users", users);
-        return "admin/users";
-    }
 
-    // Просмотр конкретного пользователя
-    @GetMapping("/view/{id}")
-    public ModelAndView viewUser(@PathVariable Long id) {
-        ModelAndView mav = new ModelAndView("admin/userView");
-        UserEntity user = userRepository.findById(id).orElse(null);
-        mav.addObject("user", user);
-        return mav;
+        // Подсчет в контроллере
+        long adminCount = 0;
+        long userCount = 0;
+
+        for (UserEntity user : users) {
+            if ("ADMIN".equals(user.getRole())) {
+                adminCount++;
+            } else if ("USER".equals(user.getRole())) {
+                userCount++;
+            }
+        }
+
+        model.addAttribute("adminCount", adminCount);
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("totalCount", users.size());
+
+        // Текущий пользователь
+        if (authentication != null) {
+            model.addAttribute("currentUsername", authentication.getName());
+        }
+
+        return "admin/users";
     }
 
     // Удаление пользователя (кроме самого себя)
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id,
-                             @Autowired org.springframework.security.core.Authentication authentication) {
-        // Проверяем, не удаляет ли администратор самого себя
+                             Authentication authentication) {
         String currentUsername = authentication.getName();
         UserEntity userToDelete = userRepository.findById(id).orElse(null);
 
@@ -53,12 +65,18 @@ public class UserController {
     // Изменение роли пользователя
     @PostMapping("/update-role/{id}")
     public String updateUserRole(@PathVariable Long id,
-                                 @RequestParam String newRole) {
+                                 @RequestParam String newRole,
+                                 Authentication authentication) {
+        String currentUsername = authentication.getName();
         UserEntity user = userRepository.findById(id).orElse(null);
-        if (user != null && (newRole.equals("ADMIN") || newRole.equals("USER"))) {
-            user.setRole(newRole);
-            userRepository.save(user);
+
+        if (user != null && !user.getUsername().equals(currentUsername)) {
+            if (newRole.equals("ADMIN") || newRole.equals("USER")) {
+                user.setRole(newRole);
+                userRepository.save(user);
+            }
         }
+
         return "redirect:/admin/users/";
     }
 }
