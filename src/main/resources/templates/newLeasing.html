@@ -5,114 +5,7 @@
     <title>Добавление нового клиента</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #27ae60;
-            --accent-color: #3498db;
-            --light-bg: #f8f9fa;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e4f5 100%);
-            min-height: 100vh;
-            padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .form-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: 0 auto;
-            border-top: 5px solid var(--secondary-color);
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
-        }
-
-        .form-header h1 {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 8px;
-        }
-
-        .required-field::after {
-            content: " *";
-            color: #e74c3c;
-        }
-
-        .form-control, .form-select {
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 10px 12px;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .field-hint {
-            font-size: 0.85em;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-
-        .btn-submit {
-            background-color: var(--secondary-color);
-            border: none;
-            padding: 12px 30px;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #219653;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-        }
-
-        .btn-cancel {
-            background-color: #95a5a6;
-            border: none;
-            padding: 12px 30px;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-cancel:hover {
-            background-color: #7f8c8d;
-            transform: translateY(-2px);
-        }
-
-        .alert-box {
-            background-color: #e8f4fc;
-            border-left: 4px solid var(--accent-color);
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 25px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/zengarden.css">
 </head>
 <body>
 <div class="container">
@@ -138,7 +31,7 @@
                 <div class="col-md-6">
                     <!-- ФИО -->
                     <div class="form-group">
-                        <label class="form-label required-field">ФИО / Название организации:</label>
+                        <label class="form-label required-field">ФИО / Название организации*:</label>
                         <input type="text" th:field="*{fullName}" class="form-control" required
                                placeholder="Иванов Иван Иванович или ООО 'Ромашка'">
                         <div class="field-hint">
@@ -148,7 +41,7 @@
 
                     <!-- Номер договора -->
                     <div class="form-group">
-                        <label class="form-label required-field">Номер договора:</label>
+                        <label class="form-label required-field">Номер договора*:</label>
                         <input type="number" th:field="*{agreementN}" class="form-control" required
                                placeholder="123456" min="1" step="1"
                                th:attr="value=${leasing.agreementN != null} ? ${leasing.agreementN} : ''">
@@ -159,7 +52,7 @@
 
                     <!-- Телефон -->
                     <div class="form-group">
-                        <label class="form-label required-field">Телефон:</label>
+                        <label class="form-label required-field">Телефон*:</label>
                         <input type="tel" th:field="*{phone}" class="form-control" required
                                placeholder="+7 (999) 123-45-67">
                         <div class="field-hint">

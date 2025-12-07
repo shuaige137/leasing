@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр клиента</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/zengarden.css">
+</head>
+<body>
+<div class="container">
+    <div class="card card-view">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-1"><i class="bi bi-person-badge me-2"></i>
+                    <span th:text="${leasing.fullName}">ФИО Клиента</span>
+                </h3>
+                <div class="text-white-50 small">
+                    ID: <span class="client-id" th:text="${leasing.clientId}">1</span>
+                    &nbsp;&nbsp;•&nbsp;&nbsp;
+                    Договор: <span class="client-id" th:text="${leasing.agreementN}">1001</span>
+                </div>
+            </div>
+            <div class="text-end actions">
+                <a th:href="@{'/edit/' + ${leasing.clientId}}" class="btn btn-light btn-sm me-2" title="Редактировать">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a th:href="@{'/delete/' + ${leasing.clientId}}"
+                   class="btn btn-danger btn-sm me-2 delete-btn"
+                   th:attr="data-fullname=${leasing.fullName}">
+                    <i class="bi bi-trash"></i>
+                </a>
+                <a th:href="@{/}" class="btn btn-outline-light btn-sm" title="Назад к списку">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- тело карточки с полями -->
+        <div class="card-body">
+            <div class="row info-row">
+                <div class="col-md-4">
+                    <div class="field-name">Тип клиента</div>
+                    <div class="mt-2">
+                        <span th:if="${leasing.clientType == 'INDIVIDUAL'}" class="badge bg-info badge-type">Физическое лицо</span>
+                        <span th:if="${leasing.clientType == 'LEGAL_ENTITY'}" class="badge bg-primary badge-type">Юридическое лицо</span>
+                        <span th:if="${leasing.clientType == 'SOLE_PROPRIETOR'}" class="badge bg-success badge-type">ИП</span>
+                        <span th:if="${leasing.clientType == null or leasing.clientType == ''}" class="badge bg-secondary badge-type">—</span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="field-name">ИНН</div>
+                    <div class="field-value mt-2" th:text="${leasing.inn} ?: '—'">1234567890</div>
+                </div>
+            </div>
+
+            <div class="row info-row">
+                <div class="col-md-12">
+                    <div class="field-name">Контакты</div>
+                    <div class="d-flex flex-column flex-md-row mt-2 gap-3">
+                        <div>
+                            <div class="small text-muted">Телефон</div>
+                            <div class="field-value">
+                                <a th:href="'tel:' + ${leasing.phone}" th:text="${leasing.phone} ?: '—'">+7...</a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Email</div>
+                            <div class="field-value">
+                                <a th:if="${leasing.email}" th:href="'mailto:' + ${leasing.email}" th:text="${leasing.email}">email@example.com</a>
+                                <span th:unless="${leasing.email}" class="text-muted">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", function(event) {
+                const name = this.dataset.fullname;
+                if (!confirm(`Удалить клиента "${name}"?`)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

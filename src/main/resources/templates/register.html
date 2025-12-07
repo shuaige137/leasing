@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация | ДзенЛиз</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/zengarden.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e8f4ff 0%, #a3d5ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .reg-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(30, 92, 163, 0.15);
+            width: 100%;
+            max-width: 420px;
+        }
+    </style>
+</head>
+<body>
+<div class="reg-card">
+    <div class="text-center mb-4">
+        <i class="bi bi-person-plus" style="font-size: 3rem; color: #7cb342;"></i>
+        <h3 class="mt-3">Регистрация в ДзенЛиз</h3>
+        <p class="text-muted">Создайте новую учётную запись</p>
+    </div>
+
+    <!-- Сообщения об ошибках -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        Пользователь с таким логином уже существует
+    </div>
+
+    <form method="post" th:action="@{/register}" th:object="${user}">
+        <div class="mb-3">
+            <label class="form-label">Логин</label>
+            <input class="form-control" th:field="*{username}" required
+                   placeholder="Придумайте логин">
+            <div class="form-text">От 3 до 20 символов</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Пароль</label>
+            <input type="password" th:field="*{password}" class="form-control" required
+                   placeholder="Придумайте пароль">
+            <div class="form-text">Не менее 6 символов</div>
+        </div>
+
+        <button class="btn btn-success w-100 mt-4 py-3">
+            <i class="bi bi-check-circle me-2"></i>Создать аккаунт
+        </button>
+
+        <div class="text-center mt-4">
+            <p class="mb-0">Уже есть аккаунт?</p>
+            <a th:href="@{/login}" class="btn btn-outline-primary mt-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Войти в систему
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

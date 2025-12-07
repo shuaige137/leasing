@@ -14,7 +14,7 @@ public class LeasingEntity {
     @Column(name = "full_name")
     private String fullName;
     @Column(name = "agreement_n", unique = true)
-    private String agreementN;
+    private Integer agreementN;
     @Column(name = "inn")
     private String inn;
     @Column(name = "phone")
@@ -46,10 +46,10 @@ public class LeasingEntity {
         this.fullName = fullName;
     }
 
-    public String getAgreementN() {
+    public Integer getAgreementN() {
         return this.agreementN;
     }
-    public void setAgreementN(String agreementN) {
+    public void setAgreementN(Integer agreementN) {
         this.agreementN = agreementN;
     }
 

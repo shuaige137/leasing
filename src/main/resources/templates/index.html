@@ -1,155 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="ru">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Лизинговая компания - Клиенты</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/zengarden.css">
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-bg: #f8f9fa;
+        /* ИКОНКИ - БЕЛЫЕ, ТЕКСТ - ЧЁРНЫЙ */
+        .stats-panel .bi {
+            color: #FFFFFF !important;
+            opacity: 1 !important;
         }
 
-        body {
-            background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-bottom: 50px;
+        /* Цифры - черные, жирные */
+        .stats-panel h5 {
+            color: #000000 !important;
+            font-weight: 900 !important;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5) !important;
         }
 
-        .header-banner {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 40px 0;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        /* Подписи - темно-серые */
+        .stats-panel small {
+            color: #333333 !important;
+            font-weight: 700 !important;
         }
 
-        .search-container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border: 1px solid #eaeaea;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border: 1px solid #eaeaea;
-            margin-bottom: 30px;
-        }
-
-        .table-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            border-bottom: 3px solid var(--secondary-color);
-        }
-
-        .table thead th {
-            background-color: #f1f5f9;
-            color: var(--primary-color);
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-            padding: 15px;
-            vertical-align: middle;
-        }
-
-        .table tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(52, 152, 219, 0.05);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .client-type-badge {
-            font-size: 0.75em;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        .agreement-badge {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            background-color: #2c3e50;
-            color: white;
-        }
-
-        .contact-link {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .contact-link:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            padding: 6px 12px;
-            font-size: 0.85em;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .stats-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border: 1px solid #eaeaea;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #dee2e6;
-        }
-
-        @media (max-width: 768px) {
-            .table-container {
-                overflow-x: auto;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .header-banner {
-                padding: 25px 0;
-            }
-
-            .display-4 {
-                font-size: 2rem;
-            }
+        /* Фон контейнеров статистики - светлый для контраста */
+        .stats-panel > .row > div > .d-flex {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            border-radius: 10px !important;
+            padding: 15px !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
         }
     </style>
 </head>
@@ -160,15 +44,23 @@
         <div class="row align-items-center">
             <div class="col-lg-8">
                 <h1 class="display-4 fw-bold">
-                    <i class="bi bi-building-gear"></i> Лизинговая компания
+                    <i class="bi bi-building-gear"></i> ДзенЛиз
                 </h1>
                 <p class="lead mb-0">
                     Информационно-справочная система управления клиентами
                 </p>
             </div>
             <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <!-- Кнопка администратора (только для ADMIN) -->
+                <a sec:authorize="hasRole('ADMIN')"
+                   th:href="@{/admin/users/}"
+                   class="btn btn-admin btn-lg px-4 me-2">
+                    <i class="bi bi-shield-check me-1"></i> Пользователи
+                </a>
+
+                <!-- Кнопка нового клиента -->
                 <a th:href="@{/new}" class="btn btn-light btn-lg px-4">
-                    <i class="bi bi-plus-circle"></i> Новый клиент
+                    <i class="bi bi-plus-circle me-1"></i> Новый клиент
                 </a>
             </div>
         </div>

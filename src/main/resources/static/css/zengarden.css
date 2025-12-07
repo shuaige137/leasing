@@ -1,0 +1,796 @@
+/* ZenLease - Японский сад с акцентами */
+:root {
+    /* Основная палитра - небо и вода */
+    --zen-sky-light: #e8f4ff;       /* Светлый небесный */
+    --zen-sky-medium: #8bc5ff;      /* Средний небесный */
+    --zen-sky-deep: #3a86d9;        /* Глубокий небесный */
+    --zen-sky-dark: #1e5ca3;        /* Тёмный небесный */
+
+    /* Камни и нейтральные тона */
+    --zen-stone-light: #f5f7fa;     /* Светлый камень */
+    --zen-stone-medium: #d1d9e6;    /* Средний камень */
+    --zen-stone-dark: #8a96b0;      /* Тёмный камень */
+
+    /* Акцентные цвета (японские мосты и фонари) */
+    --zen-accent-red: #e74c3c;      /* Красный мост */
+    --zen-accent-yellow: #f39c12;   /* Жёлтый фонарь */
+    --zen-accent-gold: #f1c40f;     /* Золотистый */
+
+    /* Приглушённая зелень */
+    --zen-moss-subtle: #d5e8d4;     /* Светлый мох */
+    --zen-moss-medium: #7cb342;     /* Средний мох (реже) */
+
+    /* Дополнительные */
+    --zen-water: #bbdefb;           /* Цвет воды */
+    --zen-sand: #f5e6d3;            /* Цвет песка */
+    --zen-text-dark: #2c3e50;       /* Тёмный текст */
+    --zen-text-light: #6c7a91;      /* Светлый текст */
+    --zen-shadow: rgba(30, 92, 163, 0.1); /* Тень неба */
+}
+
+/* Глобальные стили - больше синего */
+body {
+    background: linear-gradient(135deg,
+    var(--zen-sky-light) 0%,
+    #d6eaff 30%,
+    var(--zen-water) 100%);
+    font-family: 'Segoe UI', 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+    color: var(--zen-text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+/* Декоративные волны на фоне */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+            radial-gradient(circle at 15% 25%, rgba(59, 134, 217, 0.03) 0%, transparent 25%),
+            radial-gradient(circle at 85% 75%, rgba(59, 134, 217, 0.03) 0%, transparent 25%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Шапка с градиентом неба */
+.header-banner {
+    background: linear-gradient(135deg,
+    var(--zen-sky-dark) 0%,
+    var(--zen-sky-deep) 50%,
+    #2e86c1 100%);
+    color: white;
+    padding: 40px 0;
+    margin-bottom: 40px;
+    box-shadow: 0 6px 25px var(--zen-shadow);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid var(--zen-accent-yellow); /* Жёлтый акцент */
+}
+
+/* Волны в шапке */
+.header-banner::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0,20 C150,40 350,0 600,20 C850,40 1050,0 1200,20 L1200,40 L0,40 Z' fill='white' fill-opacity='0.15'/%3E%3C/svg%3E");
+    background-size: cover;
+}
+
+/* Контейнеры - каменные с синими тенями */
+.search-container,
+.table-container,
+.stats-panel,
+.card-view,
+.form-card {
+    background: linear-gradient(145deg,
+    white 0%,
+    var(--zen-stone-light) 100%);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow:
+            0 8px 25px rgba(30, 92, 163, 0.08),
+            0 0 0 1px rgba(139, 197, 255, 0.15);
+    border: 1px solid rgba(139, 197, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Тонкая подсветка сверху */
+.search-container::before,
+.table-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+    var(--zen-sky-medium) 0%,
+    var(--zen-accent-yellow) 50%,
+    var(--zen-sky-medium) 100%);
+}
+
+/* Основные кнопки - синие с жёлтым ховером */
+.btn-primary,
+.btn-submit {
+    background: linear-gradient(135deg,
+    var(--zen-sky-deep) 0%,
+    var(--zen-sky-dark) 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 134, 217, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover,
+.btn-submit:hover {
+    background: linear-gradient(135deg,
+    var(--zen-sky-dark) 0%,
+    #1a4d8c 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(59, 134, 217, 0.4);
+}
+
+/* Акцентная жёлтая подсветка при наведении */
+.btn-primary::after,
+.btn-submit::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(243, 156, 18, 0.2) 50%,
+    transparent 100%);
+    transition: left 0.6s ease;
+}
+
+.btn-primary:hover::after,
+.btn-submit:hover::after {
+    left: 100%;
+}
+
+/* Опасные кнопки - красные */
+.btn-danger,
+.delete-btn {
+    background: linear-gradient(135deg,
+    var(--zen-accent-red) 0%,
+    #c0392b 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover,
+.delete-btn:hover {
+    background: linear-gradient(135deg,
+    #c0392b 0%,
+    #a93226 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Вторичные кнопки */
+.btn-cancel,
+.btn-outline-secondary {
+    background: linear-gradient(135deg,
+    var(--zen-stone-light) 0%,
+    var(--zen-stone-medium) 100%);
+    border: 1px solid var(--zen-stone-medium);
+    color: var(--zen-stone-dark);
+}
+
+.btn-cancel:hover,
+.btn-outline-secondary:hover {
+    border-color: var(--zen-sky-medium);
+    color: var(--zen-sky-dark);
+}
+
+/* Заголовки таблиц - синие */
+.table thead th {
+    background: linear-gradient(to bottom,
+    var(--zen-sky-light) 0%,
+    var(--zen-sky-medium) 100%);
+    color: var(--zen-sky-dark);
+    border-bottom: 2px solid var(--zen-accent-yellow);
+    font-weight: 700;
+    padding: 16px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+/* Строки таблицы */
+.table tbody tr {
+    transition: all 0.25s ease;
+    border-bottom: 1px solid rgba(139, 197, 255, 0.2);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(139, 197, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 92, 163, 0.1);
+}
+
+/* Бейджи */
+.badge {
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 6px 14px;
+    font-size: 0.85em;
+}
+
+/* Типы клиентов */
+.bg-info { /* ФЛ - синий */
+    background-color: var(--zen-sky-medium) !important;
+    color: white;
+}
+
+.bg-primary { /* ЮЛ - глубокий синий */
+    background-color: var(--zen-sky-dark) !important;
+    color: white;
+}
+
+.bg-success { /* ИП - приглушённая зелень */
+    background-color: var(--zen-moss-medium) !important;
+    color: white;
+}
+
+/* Номер договора - каменный цвет */
+.agreement-badge {
+    background-color: var(--zen-stone-dark) !important;
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Акцентные элементы - жёлтые */
+.text-warning,
+.bi-building-gear,
+.bi-person-badge {
+    color: var(--zen-accent-yellow) !important;
+}
+
+/* Акцентные элементы - красные */
+.text-danger,
+.bi-trash {
+    color: var(--zen-accent-red) !important;
+}
+
+/* Карточка просмотра */
+.card-view {
+    border-top: 5px solid var(--zen-accent-yellow);
+}
+
+.card-header {
+    background: linear-gradient(90deg,
+    var(--zen-sky-dark) 0%,
+    var(--zen-sky-deep) 100%);
+    color: white;
+    position: relative;
+}
+
+/* Красный акцент в карточке */
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--zen-accent-red);
+}
+
+/* Формы */
+.form-control,
+.form-select {
+    border: 2px solid var(--zen-stone-medium);
+    border-radius: 8px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--zen-sky-medium);
+    box-shadow: 0 0 0 3px rgba(59, 134, 217, 0.2);
+    outline: none;
+}
+
+/* Акцент на обязательных полях */
+.form-control:required:focus {
+    border-color: var(--zen-accent-yellow);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+/* Статистика - с цветными акцентами */
+.stats-panel .bg-primary {
+    background-color: var(--zen-sky-dark) !important;
+}
+
+.stats-panel .bg-success {
+    background-color: var(--zen-moss-medium) !important;
+}
+
+.stats-panel .bg-info {
+    background-color: var(--zen-sky-medium) !important;
+}
+
+/* Иконки */
+.bi-building-gear,
+.bi-person-badge,
+.bi-search,
+.bi-people-fill {
+    color: var(--zen-sky-dark);
+    text-shadow: 0 2px 4px rgba(30, 92, 163, 0.2);
+}
+
+/* Акцентные иконки действия */
+.bi-pencil-square {
+    color: var(--zen-sky-deep);
+}
+
+.bi-eye {
+    color: var(--zen-moss-medium);
+}
+
+.bi-trash {
+    color: var(--zen-accent-red);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-container,
+.table-container,
+.card-view,
+.form-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Эффект пульсации для важных элементов */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(59, 134, 217, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(59, 134, 217, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(59, 134, 217, 0); }
+}
+
+.btn-primary:focus,
+.btn-submit:focus {
+    animation: pulse 1.5s infinite;
+}
+
+/* Кастомные скроллбары */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--zen-stone-light);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom,
+    var(--zen-sky-medium) 0%,
+    var(--zen-sky-deep) 100%);
+    border-radius: 5px;
+    border: 2px solid var(--zen-stone-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom,
+    var(--zen-sky-deep) 0%,
+    var(--zen-sky-dark) 100%);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .header-banner {
+        padding: 30px 0;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .search-container,
+    .table-container {
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+    }
+
+    .btn-primary,
+    .btn-submit {
+        padding: 12px 20px;
+    }
+    /* Белые иконки для блока статистики */
+    .stats-panel .bg-primary,
+    .stats-panel .bg-success,
+    .stats-panel .bg-info {
+        background: linear-gradient(135deg,
+        var(--zen-sky-deep) 0%,
+        var(--zen-sky-dark) 100%) !important;
+        color: white !important;
+    }
+
+    /* Контейнеры для иконок в статистике */
+    .stats-panel .bg-primary,
+    .stats-panel .bg-success,
+    .stats-panel .bg-info {
+        background-color: transparent !important;
+        background: linear-gradient(135deg,
+        rgba(59, 134, 217, 0.9) 0%,
+        rgba(30, 92, 163, 0.9) 100%) !important;
+        border: none;
+    }
+
+    /* Иконки внутри статистики - белые */
+    .stats-panel .bi-people,
+    .stats-panel .bi-file-text,
+    .stats-panel .bi-telephone {
+        color: white !important;
+        filter: brightness(1.5);
+        font-size: 1.8rem;
+    }
+
+    /* Улучшение видимости текста в статистике */
+    .stats-panel h5 {
+        color: white !important;
+        font-weight: 700;
+        font-size: 1.8rem;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats-panel small {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+    }
+
+    /* Контейнеры статистики */
+    .stats-panel > .row > div > .d-flex {
+        background: linear-gradient(135deg,
+        rgba(30, 92, 163, 0.15) 0%,
+        rgba(59, 134, 217, 0.1) 100%);
+        border-radius: 12px;
+        padding: 15px;
+        border: 1px solid rgba(139, 197, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .stats-panel > .row > div > .d-flex:hover {
+        background: linear-gradient(135deg,
+        rgba(30, 92, 163, 0.25) 0%,
+        rgba(59, 134, 217, 0.2) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(30, 92, 163, 0.2);
+    }
+
+    /* Иконки с белым фоном */
+    .stats-panel .bg-primary.bg-opacity-10,
+    .stats-panel .bg-success.bg-opacity-10,
+    .stats-panel .bg-info.bg-opacity-10 {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 10px;
+        padding: 12px !important;
+    }
+
+    /* ===================== */
+    /* СТРАНИЦЫ АВТОРИЗАЦИИ */
+    /* ===================== */
+
+    /* Общие стили для страниц логина и регистрации */
+    .login-card,
+    .reg-card {
+        max-width: 420px;
+        margin: 80px auto;
+        background: linear-gradient(145deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(240, 240, 240, 0.95) 100%);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow:
+                0 15px 35px rgba(30, 92, 163, 0.15),
+                0 0 0 1px rgba(139, 197, 255, 0.3);
+        border: 1px solid rgba(139, 197, 255, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    /* Декоративный элемент в стиле японского сада */
+    .login-card::before,
+    .reg-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg,
+        var(--zen-sky-deep) 0%,
+        var(--zen-accent-yellow) 50%,
+        var(--zen-accent-red) 100%);
+    }
+
+    /* Заголовки форм */
+    .login-card h3,
+    .reg-card h3 {
+        color: var(--zen-sky-dark);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .login-card h3::after,
+    .reg-card h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--zen-accent-yellow);
+        border-radius: 2px;
+    }
+
+    /* Формы */
+    .login-card form,
+    .reg-card form {
+        margin-top: 20px;
+    }
+
+    /* Поля ввода */
+    .login-card .form-control,
+    .reg-card .form-control {
+        border: 2px solid var(--zen-stone-medium);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-card .form-control:focus,
+    .reg-card .form-control:focus {
+        border-color: var(--zen-sky-medium);
+        box-shadow:
+                0 0 0 3px rgba(59, 134, 217, 0.15),
+                inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        background-color: white;
+    }
+
+    /* Метки полей */
+    .login-card .form-label,
+    .reg-card .form-label {
+        color: var(--zen-sky-dark);
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    /* Кнопки */
+    .login-card .btn-primary,
+    .reg-card .btn-success {
+        background: linear-gradient(135deg,
+        var(--zen-sky-deep) 0%,
+        var(--zen-sky-dark) 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 134, 217, 0.3);
+        margin-top: 10px;
+    }
+
+    .login-card .btn-primary:hover,
+    .reg-card .btn-success:hover {
+        background: linear-gradient(135deg,
+        var(--zen-sky-dark) 0%,
+        #1a4d8c 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(59, 134, 217, 0.4);
+    }
+
+    /* Кнопка регистрации - с зелёным акцентом */
+    .reg-card .btn-success {
+        background: linear-gradient(135deg,
+        var(--zen-moss-medium) 0%,
+        var(--zen-moss-dark) 100%);
+        box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
+    }
+
+    .reg-card .btn-success:hover {
+        background: linear-gradient(135deg,
+        var(--zen-moss-dark) 0%,
+        #2e7d32 100%);
+        box-shadow: 0 6px 18px rgba(124, 179, 66, 0.4);
+    }
+
+    /* Ссылки */
+    .login-card a,
+    .reg-card a {
+        color: var(--zen-sky-deep);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+
+    .login-card a:hover,
+    .reg-card a:hover {
+        color: var(--zen-accent-red);
+        text-decoration: underline;
+        transform: translateX(2px);
+    }
+
+    /* Сообщения об ошибках */
+    .login-card .alert,
+    .reg-card .alert {
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border: none;
+        font-weight: 500;
+    }
+
+    .login-card .alert-danger,
+    .reg-card .alert-danger {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: var(--zen-accent-red);
+        border-left: 4px solid var(--zen-accent-red);
+    }
+
+    .login-card .alert-success,
+    .reg-card .alert-success {
+        background-color: rgba(124, 179, 66, 0.1);
+        color: var(--zen-moss-dark);
+        border-left: 4px solid var(--zen-moss-medium);
+    }
+
+    /* Фон страниц */
+    body:has(.login-card),
+    body:has(.reg-card) {
+        background: linear-gradient(135deg,
+        var(--zen-sky-light) 0%,
+        #d6eaff 30%,
+        #bbdefb 70%,
+        #a3d5ff 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    /* Декоративные элементы фона */
+    body:has(.login-card)::before,
+    body:has(.reg-card)::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+                radial-gradient(circle at 10% 20%, rgba(59, 134, 217, 0.05) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(59, 134, 217, 0.05) 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, rgba(243, 156, 18, 0.03) 0%, transparent 30%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Анимация появления */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .login-card,
+    .reg-card {
+        animation: slideIn 0.5s ease-out;
+    }
+
+    /* Адаптивность для мобильных */
+    @media (max-width: 576px) {
+        .login-card,
+        .reg-card {
+            margin: 40px 20px;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        .login-card h3,
+        .reg-card h3 {
+            font-size: 1.5rem;
+        }
+
+        .login-card .form-control,
+        .reg-card .form-control {
+            padding: 12px 14px;
+        }
+    }
+
+    /* Специальные стили только для логина */
+    .login-card {
+        border-top: 5px solid var(--zen-sky-deep);
+    }
+
+    /* Специальные стили только для регистрации */
+    .reg-card {
+        border-top: 5px solid var(--zen-moss-medium);
+    }
+
+    /* Иконка для формы (если добавите позже) */
+    .login-card .bi-person-circle,
+    .reg-card .bi-person-plus {
+        color: var(--zen-sky-medium);
+        font-size: 3rem;
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 3px 5px rgba(59, 134, 217, 0.2));
+    }
+
+    /* Стиль для кнопки администратора */
+    .btn-admin {
+        background: linear-gradient(135deg,
+        var(--zen-accent-yellow) 0%,
+        var(--zen-accent-gold) 100%) !important;
+        border: none !important;
+        color: #000000 !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3) !important;
+        padding: 10px 20px !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .btn-admin:hover {
+        background: linear-gradient(135deg,
+        var(--zen-accent-gold) 0%,
+        #e67e22 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 18px rgba(243, 156, 18, 0.4) !important;
+        color: #000000 !important;
+    }
+}

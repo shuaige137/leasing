@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class Controllers {
+public class LeasingController {
 
     @Autowired
     private LeasingService service;
@@ -41,6 +41,14 @@ public class Controllers {
     @RequestMapping("/edit/{id}")
     public ModelAndView showEditLeasingForm(@PathVariable(name="id") Long id){
         ModelAndView mav = new ModelAndView("editLeasing");
+        LeasingEntity leasing = service.get(id);
+        mav.addObject("leasing", leasing);
+        return mav;
+    }
+
+    @RequestMapping("/view/{id}")
+    public ModelAndView viewLeasing(@PathVariable(name="id") Long id){
+        ModelAndView mav = new ModelAndView("viewLeasing");
         LeasingEntity leasing = service.get(id);
         mav.addObject("leasing", leasing);
         return mav;
