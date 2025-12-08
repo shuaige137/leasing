@@ -6,17 +6,17 @@
     --zen-sky-deep: #3a86d9;        /* Глубокий небесный */
     --zen-sky-dark: #1e5ca3;        /* Тёмный небесный */
 
-    /* Камни и нейтральные тона */
+    /* Нейтральные тона */
     --zen-stone-light: #f5f7fa;     /* Светлый камень */
     --zen-stone-medium: #d1d9e6;    /* Средний камень */
     --zen-stone-dark: #8a96b0;      /* Тёмный камень */
 
-    /* Акцентные цвета (японские мосты и фонари) */
+    /* Акцентные цвета */
     --zen-accent-red: #e74c3c;      /* Красный мост */
     --zen-accent-yellow: #f39c12;   /* Жёлтый фонарь */
     --zen-accent-gold: #f1c40f;     /* Золотистый */
 
-    /* Приглушённая зелень */
+    /* Зеленый */
     --zen-moss-subtle: #d5e8d4;     /* Светлый мох */
     --zen-moss-medium: #7cb342;     /* Средний мох (реже) */
 
@@ -28,7 +28,7 @@
     --zen-shadow: rgba(30, 92, 163, 0.1); /* Тень неба */
 }
 
-/* Глобальные стили - больше синего */
+/* Глобальные стили */
 body {
     background: linear-gradient(135deg,
     var(--zen-sky-light) 0%,
@@ -57,7 +57,7 @@ body::before {
     z-index: -1;
 }
 
-/* Шапка с градиентом неба */
+/* Шапка с градиентом */
 .header-banner {
     background: linear-gradient(135deg,
     var(--zen-sky-dark) 0%,
@@ -120,7 +120,7 @@ body::before {
     var(--zen-sky-medium) 100%);
 }
 
-/* Основные кнопки - синие с жёлтым ховером */
+/* Основные кнопки - синие с жёлтым */
 .btn-primary,
 .btn-submit {
     background: linear-gradient(135deg,

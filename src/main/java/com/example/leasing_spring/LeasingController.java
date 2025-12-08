@@ -61,5 +61,10 @@ public class LeasingController {
         return "redirect:/";
     }
 
+    @RequestMapping("/about")
+    public String aboutPage() {
+        return "about";
+    }
+
 }
 
