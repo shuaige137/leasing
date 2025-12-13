@@ -20,7 +20,7 @@ public class UserEntity {
     private String password;
 
     @Column(nullable = false)
-    private String role; // ADMIN / USER
+    private String role; //ADMING / ADMIN / USER
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

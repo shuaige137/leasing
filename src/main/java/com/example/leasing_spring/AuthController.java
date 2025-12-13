@@ -35,9 +35,12 @@ public class AuthController {
 
         user.setPassword(encoder.encode(user.getPassword()));
 
-        // Первая регистрация = ADMIN
-        if (repo.count() == 0) user.setRole("ADMIN");
-        else user.setRole("USER");
+        // Первая регистрация = ADMING (главный администратор)
+        if (repo.count() == 0) {
+            user.setRole("ADMING");
+        } else {
+            user.setRole("USER");
+        }
 
         repo.save(user);
         return "redirect:/login?registered";

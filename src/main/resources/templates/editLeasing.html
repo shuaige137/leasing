@@ -6,152 +6,374 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/zengarden.css">
+    <style>
+        /* Стили для центрирования формы */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+            margin: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-body {
+            padding: 40px;
+        }
+
+        .client-id-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #ff4d4f;
+        }
+
+        .field-hint {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+        }
+
+        .btn-cancel {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            color: #495057;
+            padding: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .alert-info {
+            background: #e8f4ff;
+            border: none;
+            border-left: 4px solid #1890ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-card {
+                max-width: 100%;
+            }
+
+            .form-header {
+                padding: 25px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-body {
+                padding: 25px;
+            }
+        }
+
+        /* Эффект при загрузке */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e9ecef;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+<!-- Оверлей загрузки -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+</div>
+
 <div class="container">
     <div class="form-card">
         <!-- Заголовок с ID клиента -->
         <div class="form-header">
             <h1><i class="bi bi-person-badge me-2"></i>Редактирование клиента</h1>
-            <div class="mt-2">
+            <div class="mt-3">
                     <span class="client-id-badge">
-                        ID: <span th:text="${leasing.clientId}"></span>
+                        ID клиента: <span th:text="${leasing.clientId}"></span>
                     </span>
             </div>
         </div>
 
         <!-- Форма редактирования -->
-        <form th:action="@{/save}" th:object="${leasing}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <!-- Скрытое поле для ID клиента -->
-            <input type="hidden" th:field="*{clientId}">
+        <div class="form-body">
+            <form th:action="@{/save}" th:object="${leasing}" method="post" id="editForm">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <!-- Скрытое поле для ID клиента -->
+                <input type="hidden" th:field="*{clientId}">
 
-            <div class="row">
-                <!-- Левая колонка -->
-                <div class="col-lg-6">
-                    <!-- ФИО -->
-                    <div class="form-group">
-                        <label class="form-label required-field">ФИО / Название организации:</label>
-                        <input type="text" th:field="*{fullName}" class="form-control" required>
-                        <div class="field-hint">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Полное ФИО для физических лиц или наименование организации
+                <div class="row">
+                    <!-- Левая колонка -->
+                    <div class="col-lg-6">
+                        <!-- ФИО -->
+                        <div class="form-group">
+                            <label class="form-label required-field">ФИО / Название организации:</label>
+                            <input type="text" th:field="*{fullName}" class="form-control" required>
+                            <div class="field-hint">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Полное ФИО для физических лиц или наименование организации
+                            </div>
+                        </div>
+
+                        <!-- Номер договора -->
+                        <div class="form-group">
+                            <label class="form-label required-field">Номер договора:</label>
+                            <input type="number" th:field="*{agreementN}" class="form-control" required
+                                   min="1" readonly>
+                            <div class="field-hint">
+                                <i class="bi bi-lock me-1"></i>
+                                Номер договора нельзя изменить
+                            </div>
+                        </div>
+
+                        <!-- ИНН -->
+                        <div class="form-group">
+                            <label class="form-label">ИНН:</label>
+                            <input type="text" th:field="*{inn}" class="form-control"
+                                   pattern="\d{10,12}"
+                                   title="ИНН должен содержать 10 (для юр.лиц) или 12 (для физ.лиц) цифр"
+                                   maxlength="12">
+                            <div class="field-hint">
+                                <i class="bi bi-card-checklist me-1"></i>
+                                10 цифр для организаций, 12 цифр для физических лиц
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Номер договора -->
-                    <div class="form-group">
-                        <label class="form-label required-field">Номер договора:</label>
-                        <input type="number" th:field="*{agreementN}" class="form-control" required
-                               min="1" readonly>
-                        <div class="field-hint">
-                            <i class="bi bi-lock me-1"></i>
-                            Номер договора нельзя изменить
+                    <!-- Правая колонка -->
+                    <div class="col-lg-6">
+                        <!-- Тип клиента -->
+                        <div class="form-group">
+                            <label class="form-label">Тип клиента:</label>
+                            <select th:field="*{clientType}" class="form-select">
+                                <option value="">Выберите тип клиента...</option>
+                                <option value="INDIVIDUAL">Физическое лицо</option>
+                                <option value="LEGAL_ENTITY">Юридическое лицо</option>
+                                <option value="SOLE_PROPRIETOR">Индивидуальный предприниматель</option>
+                            </select>
+                            <div class="field-hint">
+                                <i class="bi bi-person-workspace me-1"></i>
+                                Выберите категорию клиента
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- ИНН -->
-                    <div class="form-group">
-                        <label class="form-label">ИНН:</label>
-                        <input type="text" th:field="*{inn}" class="form-control"
-                               pattern="\d{10,12}"
-                               title="ИНН должен содержать 10 (для юр.лиц) или 12 (для физ.лиц) цифр"
-                               maxlength="12">
-                        <div class="field-hint">
-                            <i class="bi bi-card-checklist me-1"></i>
-                            10 цифр для организаций, 12 цифр для физических лиц
+                        <!-- Телефон -->
+                        <div class="form-group">
+                            <label class="form-label required-field">Телефон:</label>
+                            <input type="tel" th:field="*{phone}" class="form-control" required
+                                   pattern="[\+\d\s\-\(\)]+"
+                                   title="Введите корректный номер телефона">
+                            <div class="field-hint">
+                                <i class="bi bi-telephone me-1"></i>
+                                Формат: +7 (999) 123-45-67 или 89991234567
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="form-label">Email:</label>
+                            <input type="email" th:field="*{email}" class="form-control"
+                                   pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                                   title="Введите корректный email адрес">
+                            <div class="field-hint">
+                                <i class="bi bi-envelope me-1"></i>
+                                Пример: client@example.com
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Правая колонка -->
-                <div class="col-lg-6">
-                    <!-- Тип клиента -->
-                    <div class="form-group">
-                        <label class="form-label">Тип клиента:</label>
-                        <select th:field="*{clientType}" class="form-select">
-                            <option value="">Выберите тип клиента...</option>
-                            <option value="INDIVIDUAL">Физическое лицо</option>
-                            <option value="LEGAL_ENTITY">Юридическое лицо</option>
-                            <option value="SOLE_PROPRIETOR">Индивидуальный предприниматель</option>
-                        </select>
-                        <div class="field-hint">
-                            <i class="bi bi-person-workspace me-1"></i>
-                            Выберите категорию клиента
-                        </div>
+                <!-- Кнопки действий -->
+                <div class="row mt-5">
+                    <div class="col-md-6 mb-3">
+                        <a th:href="@{/}" class="btn btn-cancel w-100 py-3">
+                            <i class="bi bi-x-circle me-2"></i>Отмена
+                        </a>
                     </div>
-
-                    <!-- Телефон -->
-                    <div class="form-group">
-                        <label class="form-label required-field">Телефон:</label>
-                        <input type="tel" th:field="*{phone}" class="form-control" required
-                               pattern="[\+\d\s\-\(\)]+"
-                               title="Введите корректный номер телефона">
-                        <div class="field-hint">
-                            <i class="bi bi-telephone me-1"></i>
-                            Формат: +7 (999) 123-45-67 или 89991234567
-                        </div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label class="form-label">Email:</label>
-                        <input type="email" th:field="*{email}" class="form-control"
-                               pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-                               title="Введите корректный email адрес">
-                        <div class="field-hint">
-                            <i class="bi bi-envelope me-1"></i>
-                            Пример: client@example.com
-                        </div>
+                    <div class="col-md-6 mb-3">
+                        <button type="submit" class="btn btn-submit w-100 py-3" id="submitBtn">
+                            <i class="bi bi-check-circle me-2"></i>Сохранить изменения
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Кнопки действий -->
-            <div class="row mt-5">
-                <div class="col-md-6 mb-3">
-                    <a th:href="@{/}" class="btn btn-cancel w-100">
-                        <i class="bi bi-x-circle me-2"></i>Отмена
-                    </a>
+                <!-- Информационное сообщение -->
+                <div class="alert alert-info mt-4" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    Все изменения будут сохранены в базе данных. Поле "Номер договора" защищено от изменений.
                 </div>
-                <div class="col-md-6 mb-3">
-                    <button type="submit" class="btn btn-submit w-100">
-                        <i class="bi bi-check-circle me-2"></i>Сохранить изменения
-                    </button>
-                </div>
-            </div>
-
-            <!-- Информационное сообщение -->
-            <div class="alert alert-info mt-4" role="alert">
-                <i class="bi bi-exclamation-circle me-2"></i>
-                Все изменения будут сохранены в базе данных. Поле "Номер договора" защищено от изменений.
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Скрипт для очистки ИНН от нецифровых символов -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const form = document.getElementById('editForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Автофокус на первое редактируемое поле
+        const firstInput = document.querySelector('input[th\\:field="*{fullName}"]');
+        if (firstInput) {
+            setTimeout(() => {
+                firstInput.focus();
+                firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // Очистка ИНН от нецифровых символов
         const innInput = document.querySelector('input[th\\:field="*{inn}"]');
         if (innInput) {
             innInput.addEventListener('input', function(e) {
-                // Оставляем только цифры
                 let value = e.target.value.replace(/\D/g, '');
-
-                // Ограничиваем длину
                 if (value.length > 12) {
                     value = value.substring(0, 12);
                 }
-
                 e.target.value = value;
             });
         }
 
-        // Автоматическое форматирование телефона
+        // Форматирование телефона
         const phoneInput = document.querySelector('input[th\\:field="*{phone}"]');
         if (phoneInput) {
             phoneInput.addEventListener('input', function(e) {
@@ -182,33 +404,119 @@
                 e.target.value = value;
             });
         }
-    });
 
-    // Валидация формы перед отправкой
-    function validateForm() {
-        const phoneInput = document.querySelector('input[th\\:field="*{phone}"]');
-        const innInput = document.querySelector('input[th\\:field="*{inn}"]');
+        // Валидация формы перед отправкой
+        function validateForm() {
+            // Проверка обязательных полей
+            const requiredFields = [
+                { selector: 'input[th\\:field="*{fullName}"]', name: 'ФИО/Название организации' },
+                { selector: 'input[th\\:field="*{phone}"]', name: 'Телефон' }
+            ];
 
-        if (phoneInput && phoneInput.value.trim() === '') {
-            alert('Поле "Телефон" обязательно для заполнения');
-            phoneInput.focus();
-            return false;
-        }
+            let isValid = true;
+            let firstInvalidField = null;
 
-        if (innInput && innInput.value !== '') {
-            const innValue = innInput.value.replace(/\D/g, '');
-            if (innValue.length !== 10 && innValue.length !== 12) {
-                alert('ИНН должен содержать 10 или 12 цифр');
-                innInput.focus();
+            for (const field of requiredFields) {
+                const input = document.querySelector(field.selector);
+                if (input && input.value.trim() === '') {
+                    if (!firstInvalidField) {
+                        firstInvalidField = input;
+                    }
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            }
+
+            // Проверка ИНН (если заполнен)
+            if (innInput && innInput.value !== '') {
+                const innValue = innInput.value.replace(/\D/g, '');
+                if (innValue.length !== 10 && innValue.length !== 12) {
+                    innInput.classList.add('is-invalid');
+                    if (!firstInvalidField) {
+                        firstInvalidField = innInput;
+                    }
+                    isValid = false;
+                } else {
+                    innInput.classList.remove('is-invalid');
+                }
+            }
+
+            // Проверка email (если заполнен)
+            const emailInput = document.querySelector('input[th\\:field="*{email}"]');
+            if (emailInput && emailInput.value.trim() !== '') {
+                const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(emailInput.value)) {
+                    emailInput.classList.add('is-invalid');
+                    if (!firstInvalidField) {
+                        firstInvalidField = emailInput;
+                    }
+                    isValid = false;
+                } else {
+                    emailInput.classList.remove('is-invalid');
+                }
+            }
+
+            if (!isValid && firstInvalidField) {
+                firstInvalidField.focus();
+                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Анимация ошибки
+                firstInvalidField.style.transform = 'translateX(-5px)';
+                setTimeout(() => {
+                    firstInvalidField.style.transform = 'translateX(5px)';
+                    setTimeout(() => {
+                        firstInvalidField.style.transform = 'translateX(0)';
+                    }, 50);
+                }, 50);
+
                 return false;
             }
+
+            return true;
         }
 
-        return true;
-    }
+        // Стили для невалидных полей
+        const style = document.createElement('style');
+        style.textContent = `
+                .is-invalid {
+                    border-color: #ff4d4f !important;
+                    background-color: #fff2f0 !important;
+                }
+                .is-invalid:focus {
+                    box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.2) !important;
+                }
+            `;
+        document.head.appendChild(style);
 
-    // Присоединяем валидацию к форме
-    document.querySelector('form').onsubmit = validateForm;
+        // Назначаем валидацию на отправку формы
+        form.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Показываем индикатор загрузки
+            loadingOverlay.classList.add('active');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Сохранение...';
+        });
+
+        // Убираем валидацию при изменении полей
+        form.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('is-invalid');
+            });
+        });
+    });
+
+    // Обработка нажатия Escape для отмены
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.location.href = '/';
+        }
+    });
 </script>
 </body>
 </html>
